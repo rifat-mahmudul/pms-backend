@@ -6,6 +6,8 @@ import compression from "compression";
 import hpp from "hpp";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./app/config/swagger";
 
 const app: Application = express();
 
@@ -33,8 +35,10 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.use(globalErrorHandler);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(notFound);
+
+app.use(globalErrorHandler);
 
 export default app;
