@@ -4,6 +4,7 @@ import httpStatus from "../../constants/httpStatus";
 import { createToken } from "../../utils/jwt";
 import AppError from "../../errors/appError";
 import { envVars } from "../../config/env";
+import { verifyToken } from "../../utils/verifyToken";
 
 const register = async (payload: any) => {
   const existingUser = await User.findOne({
@@ -68,7 +69,40 @@ const login = async (payload: { email: string; password: string }) => {
   };
 };
 
+const getNewAccessToken = async (refreshToken: string) => {
+  const decoded = verifyToken(refreshToken, envVars.jwt_refresh_secret);
+
+  const { userId } = decoded;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const jwtPayload = {
+    userId: user._id,
+
+    email: user.email,
+
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+
+    envVars.jwt_access_secret,
+
+    envVars.jwt_access_expires_in,
+  );
+
+  return {
+    accessToken,
+  };
+};
+
 export const AuthServices = {
   register,
   login,
+  getNewAccessToken
 };
