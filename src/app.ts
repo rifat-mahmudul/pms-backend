@@ -8,6 +8,7 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./app/config/swagger";
+import { router } from "./app/routes";
 
 const app: Application = express();
 
@@ -36,6 +37,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use("/api/v1", router);
 
 app.use(notFound);
 
