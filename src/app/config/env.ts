@@ -2,16 +2,38 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export default {
-  port: process.env.PORT,
-  database_url: process.env.DATABASE_URL,
-  node_env: process.env.NODE_ENV,
+interface EnvConfig {
+  port: string;
 
-  bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
+  database_url: string;
 
-  jwt_access_secret: process.env.JWT_ACCESS_SECRET,
-  jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
+  node_env: string;
 
-  jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
-  jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
+  bcrypt_salt_rounds: string;
+
+  jwt_access_secret: string;
+
+  jwt_access_expires_in: string;
+
+  jwt_refresh_secret: string;
+
+  jwt_refresh_expires_in: string;
+}
+
+export const envVars: EnvConfig = {
+  port: process.env.PORT || "5000",
+
+  database_url: process.env.DATABASE_URL || "",
+
+  node_env: process.env.NODE_ENV || "development",
+
+  bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS || "10",
+
+  jwt_access_secret: process.env.JWT_ACCESS_SECRET || "",
+
+  jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN || "1d",
+
+  jwt_refresh_secret: process.env.JWT_REFRESH_SECRET || "",
+
+  jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN || "30d",
 };

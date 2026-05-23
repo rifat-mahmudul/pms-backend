@@ -6,7 +6,7 @@ export interface TUser {
   password: string;
   role: TUserRole;
   department?: string;
-  skills: string[];
+  skills?: string[];
   avatar?: string;
   isDeleted?: boolean;
 }
